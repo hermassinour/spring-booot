@@ -1,0 +1,94 @@
+
+package com.springboot.dto.seatavailabilityrq;
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
+
+
+/**
+ * Response Message Processing.
+ * 
+ * <p>Java class for OrderListProcessType complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="OrderListProcessType"&gt;
+ *   &lt;complexContent&gt;
+ *     &lt;extension base="{http://www.iata.org/IATA/2015/00/2018.1/SeatAvailabilityRQ}OrderProcessResultType"&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element ref="{http://www.iata.org/IATA/2015/00/2018.1/SeatAvailabilityRQ}Notices" minOccurs="0"/&gt;
+ *         &lt;element ref="{http://www.iata.org/IATA/2015/00/2018.1/SeatAvailabilityRQ}Remarks" minOccurs="0"/&gt;
+ *       &lt;/sequence&gt;
+ *     &lt;/extension&gt;
+ *   &lt;/complexContent&gt;
+ * &lt;/complexType&gt;
+ * </pre>
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "OrderListProcessType", propOrder = {
+    "notices",
+    "remarks"
+})
+public class OrderListProcessType
+    extends OrderProcessResultType
+{
+
+    @XmlElement(name = "Notices")
+    protected Notices notices;
+    @XmlElement(name = "Remarks")
+    protected V172RemarkType remarks;
+
+    /**
+     * Gets the value of the notices property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Notices }
+     *     
+     */
+    public Notices getNotices() {
+        return notices;
+    }
+
+    /**
+     * Sets the value of the notices property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Notices }
+     *     
+     */
+    public void setNotices(Notices value) {
+        this.notices = value;
+    }
+
+    /**
+     * Gets the value of the remarks property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link V172RemarkType }
+     *     
+     */
+    public V172RemarkType getRemarks() {
+        return remarks;
+    }
+
+    /**
+     * Sets the value of the remarks property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link V172RemarkType }
+     *     
+     */
+    public void setRemarks(V172RemarkType value) {
+        this.remarks = value;
+    }
+
+}

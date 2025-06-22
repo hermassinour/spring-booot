@@ -1,0 +1,8 @@
+server:
+  port: 8080
+
+ndc:
+  api:
+    airshopping-url: https://ndc.worldsoftgroup.com/ndc/airshopping
+    secret-key: YOUR_SECRET_KEY_HERE
+    password: YOUR_PASSWORD_HERE
