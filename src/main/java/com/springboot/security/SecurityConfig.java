@@ -1,7 +1,5 @@
 package com.springboot.security;
 
-import com.springboot.security.JwtFilter;
-import com.springboot.security.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -30,27 +28,22 @@ public class SecurityConfig {
     public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtFilter jwtFilter) {
         this.userDetailsService = userDetailsService;
         this.jwtFilter = jwtFilter;
-        System.out.println("🚀 SecurityConfig Loaded!");
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        System.out.println("✅ AuthenticationManager Bean Loaded!");
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        System.out.println("✅ PasswordEncoder Bean Loaded!");
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println("✅ SecurityFilterChain Configured!");
-
         http
-                .cors(cors -> {}) // Enables CORS using our CorsFilter bean
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
@@ -82,28 +75,26 @@ public class SecurityConfig {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-        System.out.println("✅ DaoAuthenticationProvider Loaded!");
         return authProvider;
     }
 
     @Bean
     public AuthenticationManager customAuthenticationManager() {
-        System.out.println("✅ Custom AuthenticationManager Bean Loaded!");
         return new ProviderManager(List.of(authenticationProvider()));
     }
 
-    // CORS configuration for Netlify frontend only
+    // CORS config to only allow your frontend URL
     @Bean
-    public CorsFilter corsFilter() {
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        // Allow only your Netlify frontend
-        config.addAllowedOrigin("https://jade-crumble-45a8f4.netlify.app");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.setAllowedOrigins(List.of("https://jade-crumble-45a8f4.netlify.app"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setExposedHeaders(List.of("Authorization")); // Expose JWT token if needed
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+        return source;
     }
 }
