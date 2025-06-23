@@ -50,7 +50,7 @@ public class SecurityConfig {
         System.out.println("✅ SecurityFilterChain Configured!");
 
         http
-                .cors(cors -> {}) // ✅ Enables CORS using our CorsFilter bean (no .and() needed)
+                .cors(cors -> {}) // Enables CORS using our CorsFilter bean
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
@@ -92,12 +92,13 @@ public class SecurityConfig {
         return new ProviderManager(List.of(authenticationProvider()));
     }
 
-    // 🔥 THIS FIXES CORS
+    // CORS configuration for Netlify frontend only
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOriginPattern("*"); // Allow all origins
+        // Allow only your Netlify frontend
+        config.addAllowedOrigin("https://jade-crumble-45a8f4.netlify.app");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
